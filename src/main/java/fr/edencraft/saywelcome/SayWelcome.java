@@ -4,10 +4,13 @@ import fr.edencraft.saywelcome.lang.Language;
 import fr.edencraft.saywelcome.manager.CommandManager;
 import fr.edencraft.saywelcome.manager.ConfigurationManager;
 import fr.edencraft.saywelcome.manager.ListenerManager;
+import fr.edencraft.saywelcome.runnable.BecomeClassicPlayer;
 import fr.edencraft.saywelcome.utils.ColoredText;
 import fr.edencraft.saywelcome.utils.ConfigurationUtils;
 import fr.edencraft.saywelcome.utils.NewPlayer;
+import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -25,6 +28,9 @@ public final class SayWelcome extends JavaPlugin {
 	// MANAGER
 	private ConfigurationManager configurationManager;
 
+	// API
+	private LuckPerms luckPermsAPI;
+
 	// INSTANCE
 	private static SayWelcome INSTANCE;
 
@@ -34,6 +40,11 @@ public final class SayWelcome extends JavaPlugin {
 		long delay = System.currentTimeMillis();
 
 		INSTANCE = this;
+
+		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+		if (provider != null) {
+			luckPermsAPI = provider.getProvider();
+		}
 
 		this.configurationManager = new ConfigurationManager(this);
 		this.configurationManager.setupFiles();
@@ -71,5 +82,9 @@ public final class SayWelcome extends JavaPlugin {
 
 	public List<NewPlayer> getNewPlayers() {
 		return newPlayers;
+	}
+
+	public LuckPerms getLuckPermsAPI() {
+		return luckPermsAPI;
 	}
 }

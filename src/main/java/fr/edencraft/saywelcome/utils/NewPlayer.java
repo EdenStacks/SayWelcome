@@ -1,6 +1,13 @@
 package fr.edencraft.saywelcome.utils;
 
+import fr.edencraft.saywelcome.SayWelcome;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -23,6 +30,8 @@ public class NewPlayer {
 	private final long joinDate;
 
 	private final List<Player> playersSaidWelcome;
+	private BossBar bossBar;
+	private boolean hasBossBarInit;
 
 	/**
 	 * To build a {@link NewPlayer} you must use {@link NewPlayer#getFrom} method.
@@ -33,6 +42,8 @@ public class NewPlayer {
 		this.player = player;
 		this.joinDate = System.currentTimeMillis();
 		this.playersSaidWelcome = new ArrayList<>();
+		this.hasBossBarInit = false;
+		this.bossBar = null;
 	}
 
 	public long getJoinDate() {
@@ -62,6 +73,107 @@ public class NewPlayer {
 	public static NewPlayer getFrom(Player player) {
 		if (player.hasPlayedBefore()) return null;
 		return new NewPlayer(player);
+	}
+
+	/**
+	 * Send a message in  {@link net.md_5.bungee.api.ChatMessageType#ACTION_BAR} of the {@link NewPlayer}.
+	 *
+	 * @param message The message to send. <b>Colors are not treated here !</b>
+	 */
+	public void sendActionBar(String message) {
+		player.spigot().sendMessage(
+				ChatMessageType.ACTION_BAR,
+				TextComponent.fromLegacyText(message)
+		);
+	}
+
+	/**
+	 * Call this method to init the player {@link BossBar}.
+	 * It required before use {@link NewPlayer#updateBossBar()}.
+	 */
+	public void initBossBar() {
+		if (hasBossBarInit) return;
+
+		hasBossBarInit = true;
+
+		bossBar = new BossBarBuilder(
+				SayWelcome.getINSTANCE().getLanguage().getBossBarTitle(playersSaidWelcome),
+				BarColor.GREEN,
+				BarStyle.SOLID
+		).build();
+
+		bossBar.setProgress(getProgress() / 100);
+		bossBar.addPlayer(player);
+
+		new BossBarRunnable(this)
+				.runTaskTimerAsynchronously(SayWelcome.getINSTANCE(), 0, 1);
+	}
+
+	/**
+	 * Update {@link BossBar} of the {@link NewPlayer}.
+	 */
+	public void updateBossBar() {
+		if (!hasBossBarInit) return;
+		bossBar.setTitle(SayWelcome.getINSTANCE().getLanguage().getBossBarTitle(playersSaidWelcome));
+
+		bossBar.setProgress(getProgress() / 100);
+		bossBar.setColor(getBarColor(getProgress()));
+	}
+
+	/**
+	 * Remove the {@link BossBar} for the {@link NewPlayer}.
+	 */
+	public void removeBossBar() {
+		bossBar.removeAll();
+		hasBossBarInit = false;
+	}
+
+	/**
+	 * @param progress progression before be no more considered as a {@link NewPlayer}.
+	 * @return a BarColor.
+	 */
+	private BarColor getBarColor(double progress) {
+		BarColor barColor;
+
+		if (progress <= 25) {
+			barColor = BarColor.GREEN;
+		} else if (progress <= 50) {
+			barColor = BarColor.YELLOW;
+		} else if (progress <= 75) {
+			barColor = BarColor.PINK;
+		} else if (progress <= 100) {
+			barColor = BarColor.RED;
+		} else {
+			barColor = BarColor.WHITE;
+		}
+
+		return barColor;
+	}
+
+	/**
+	 * @return percentage before {@link NewPlayer} become a classic {@link Player}.
+	 */
+	private double getProgress() {
+		return (double) (100 * ((System.currentTimeMillis() - joinDate)) / 120000);
+	}
+
+	private static class BossBarRunnable extends BukkitRunnable {
+
+		private final NewPlayer newPlayer;
+
+		public BossBarRunnable(NewPlayer newPlayer) {
+			this.newPlayer = newPlayer;
+		}
+
+		@Override
+		public void run() {
+			if (!newPlayer.hasBossBarInit) {
+				cancel();
+				return;
+			}
+			newPlayer.updateBossBar();
+		}
+
 	}
 
 }

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * This class regroup all request that can be done with all configuration files
- * used by QuickShopLimiter plugin.
+ * used by SayWelcome plugin.
  */
 public class ConfigurationUtils {
 
