@@ -1,10 +1,12 @@
 # 👋 SayWelcome V1.0.0 👋
 
-📌 <b>This is not the official v1.0.0, it still work in progress</b> 📌<br>
-
 📜 This plugin adds cool functionalities to say welcome to your new players.
 
-Tested on paper 1.17.1.
+Tested on paper 1.17.1 with LuckPerms v5.3.47.
+
+
+## 💫 Dependency
+- LuckPerms
 
 
 ## 📏 Configuration

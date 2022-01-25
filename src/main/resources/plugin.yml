@@ -4,5 +4,7 @@ main: fr.edencraft.saywelcome.SayWelcome
 api-version: 1.17
 prefix: SayWelcome
 authors: [ NayeOne ]
+depend:
+  - Luckperms
 description: A plugin to say welcome to new players on your servers
 website: https://github.com/EdenStacks

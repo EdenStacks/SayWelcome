@@ -7,7 +7,6 @@ import co.aikar.commands.annotation.Default;
 import fr.edencraft.saywelcome.SayWelcome;
 import fr.edencraft.saywelcome.lang.Language;
 import fr.edencraft.saywelcome.manager.ConfigurationManager;
-import fr.edencraft.saywelcome.utils.ColoredText;
 import fr.edencraft.saywelcome.utils.NewPlayer;
 import org.bukkit.entity.Player;
 
@@ -28,35 +27,27 @@ public class WelcomeCommand extends BaseCommand {
 		List<NewPlayer> newPlayers = SayWelcome.getINSTANCE().getNewPlayers();
 
 		if (newPlayers.isEmpty()) {
-			player.sendMessage(new ColoredText(
-					"&cIl n'y a aucun nouveau joueur à qui souhaiter la bienvenue."
-			).treat());
+			player.sendMessage(LANGUAGE.getNoNewPlayerToSayWelcome());
 			return;
 		}
 
 		if (!hasNewInNewPlayers(player, newPlayers)) {
-			player.sendMessage(new ColoredText(
-					"&cTu as déjà dit bienvenue à tous les nouveaux joueurs."
-			).treat());
+			player.sendMessage(LANGUAGE.getAlreadySaidWelcomeToAll());
 			return;
 		}
 
-		List<String> playersName = new ArrayList<>();
+		List<NewPlayer> newPlayersList = new ArrayList<>();
 
 		newPlayers.stream()
 				.filter(newPlayer -> !newPlayer.getPlayersSaidWelcome().contains(player))
 				.forEach(newPlayer -> {
 					newPlayer.addPlayerSaidWelcome(player);
-					newPlayer.sendActionBar(
-							new ColoredText(player.getName() + " t'as souhaité la bienvenue !").treat()
-					);
+					newPlayer.sendActionBar(LANGUAGE.getNewPlayerReceiveWelcome(player));
 					newPlayer.updateBossBar();
-					playersName.add(newPlayer.getPlayer().getName());
+					newPlayersList.add(newPlayer);
 				});
 
-		player.sendMessage(new ColoredText(
-				"&aTu as souhaité la bienvenue à &e" + playersName.size() + "&a joueur(s)."
-		).treat());
+		player.sendMessage(LANGUAGE.getPlayerSaidWelcomeWithSuccess(player, newPlayersList));
 	}
 
 	/**

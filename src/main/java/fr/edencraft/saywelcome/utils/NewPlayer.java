@@ -157,6 +157,10 @@ public class NewPlayer {
 		return (double) (100 * ((System.currentTimeMillis() - joinDate)) / 120000);
 	}
 
+	/**
+	 * This runnable update the {@link BossBar} of a {@link NewPlayer}.<br>
+	 * If {@link NewPlayer#hasBossBarInit} is false, it will stop the runnable.
+	 */
 	private static class BossBarRunnable extends BukkitRunnable {
 
 		private final NewPlayer newPlayer;
