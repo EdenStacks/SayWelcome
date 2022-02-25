@@ -1,10 +1,10 @@
 name: SayWelcome
 version: '${project.version}'
 main: fr.edencraft.saywelcome.SayWelcome
-api-version: 1.17
+api-version: 1.18
 prefix: SayWelcome
 authors: [ NayeOne ]
 depend:
-  - Luckperms
+  - LuckPerms
 description: A plugin to say welcome to new players on your servers
 website: https://github.com/EdenStacks
