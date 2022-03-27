@@ -116,6 +116,9 @@ public class NewPlayer {
 		if (!hasBossBarInit) return;
 		bossBar.setTitle(SayWelcome.getINSTANCE().getLanguage().getBossBarTitle(playersSaidWelcome));
 
+		if (getProgress() / 100 > 1) {
+			return;
+		}
 		bossBar.setProgress(getProgress() / 100);
 		bossBar.setColor(getBarColor(getProgress()));
 	}
@@ -172,6 +175,10 @@ public class NewPlayer {
 		@Override
 		public void run() {
 			if (!newPlayer.hasBossBarInit) {
+				cancel();
+				return;
+			}
+			if (newPlayer.getProgress() / 100 > 1) {
 				cancel();
 				return;
 			}

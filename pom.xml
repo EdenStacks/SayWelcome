@@ -6,7 +6,7 @@
 
     <groupId>fr.edencraft</groupId>
     <artifactId>SayWelcome</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>SayWelcome</name>
@@ -25,7 +25,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                    <outputDirectory>D:/Desktop/[Java16]_Serveur_1.17/plugins</outputDirectory>
+                    <outputDirectory>D:/Desktop/ServeursDev/EdenCraft-1.18.2/plugins</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
