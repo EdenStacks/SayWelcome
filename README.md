@@ -1,4 +1,4 @@
-# 👋 SayWelcome V1.0.1 👋
+# 👋 SayWelcome V1.2.0 👋
 
 📜 This plugin adds cool functionalities to say welcome to your new players.
 
