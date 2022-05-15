@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @CommandAlias("welcome|bienvenue|b")
 public class WelcomeCommand extends BaseCommand {
@@ -39,7 +40,8 @@ public class WelcomeCommand extends BaseCommand {
 		List<NewPlayer> newPlayersList = new ArrayList<>();
 
 		newPlayers.stream()
-				.filter(newPlayer -> !newPlayer.getPlayersSaidWelcome().contains(player))
+				.filter(newPlayer -> !newPlayer.getPlayersSaidWelcome().contains(player)
+						&& !newPlayer.getPlayer().getName().equalsIgnoreCase(player.getName()))
 				.forEach(newPlayer -> {
 					newPlayer.addPlayerSaidWelcome(player);
 					newPlayer.sendActionBar(LANGUAGE.getNewPlayerReceiveWelcome(player));
@@ -47,7 +49,15 @@ public class WelcomeCommand extends BaseCommand {
 					newPlayersList.add(newPlayer);
 				});
 
+		playerWelcomeMessage(player, newPlayersList);
 		player.sendMessage(LANGUAGE.getPlayerSaidWelcomeWithSuccess(player, newPlayersList));
+	}
+
+	private void playerWelcomeMessage(Player player, List<NewPlayer> newPlayers) {
+		List<String> playerWelcomeMessages = LANGUAGE.getPlayerWelcomeMessages(player, newPlayers);
+		int randomIndex = new Random().nextInt(playerWelcomeMessages.size());
+
+		player.chat(LANGUAGE.getPlayerWelcomeMessages(player, newPlayers).get(randomIndex));
 	}
 
 	/**

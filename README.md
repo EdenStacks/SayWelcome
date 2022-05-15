@@ -31,5 +31,5 @@ language: fr
 - [@LudovicAns](https://github.com/LudovicAns)
 
 
-[![Logo](https://i.imgur.com/sB82UfM.png)](https://github.com/EdenStacks)
+[![Logo](https://i.imgur.com/QXuYtex.png)](https://github.com/EdenStacks)
 

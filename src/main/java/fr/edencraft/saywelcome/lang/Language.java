@@ -53,4 +53,13 @@ public interface Language {
      * @return The message in a specific language.
      */
     String getPlayerSaidWelcomeWithSuccess(Player playerSaidWelcome, List<NewPlayer> newPlayersWelcomed);
+
+    /**
+     * Those messages are called when a player chat welcome message.
+     *
+     * @param player who said welcome.
+     * @param newPlayers list of {@link NewPlayer} that has been welcomed by playerSaidWelcome.
+     * @return The message in a specific language.
+     */
+    List<String> getPlayerWelcomeMessages(Player player, List<NewPlayer> newPlayers);
 }
